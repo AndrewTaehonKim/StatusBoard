@@ -1,0 +1,42 @@
+[
+    {
+        "name": "strength",
+        "acronym": "STR",
+        "value": 3,
+        "current_exp": 0,
+        "next_level": 10,
+        "prev_level": 5
+    },
+    {
+        "name": "agility",
+        "acronym": "AGI",
+        "value": 2,
+        "current_exp": 0,
+        "next_level": 10,
+        "prev_level": 5
+    },
+    {
+        "name": "vitality",
+        "acronym": "VIT",
+        "value": 2,
+        "current_exp": 0,
+        "next_level": 10,
+        "prev_level": 5
+    },
+    {
+        "name": "intelligence",
+        "acronym": "INT",
+        "value": 5,
+        "current_exp": 0,
+        "next_level": 10,
+        "prev_level": 10
+    },
+    {
+        "name": "willpower",
+        "acronym": "WIL",
+        "value": 5,
+        "current_exp": 0,
+        "next_level": 1,
+        "prev_level": 1
+    }
+]

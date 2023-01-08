@@ -1,6 +1,10 @@
 build/
 dist/
-json_files/
+
 exe_command.txt
 *.spec
 *.lnk
+
+json_files/profile.json
+json_files/status.json
+json_files/quests.json
