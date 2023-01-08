@@ -1,0 +1,6 @@
+build/
+dist/
+json_files/status_default.json
+exe_command.txt
+*.spec
+*.lnk
