@@ -1,1 +1,315 @@
-[{"quest_number": 0, "title": "It's just an adsorption", "description": "Run a basic adsorption calculation", "reward": [{"INT": 5}], "penalty": [{"INT": -10}], "duration": 1, "completed": true, "failed": false, "created_date": "01/04/13:40", "complete_by": "01/09/13:40", "repeat": 0, "repeat_success": false, "showing": false}, {"quest_number": 1, "title": "Off with your Right Hand!", "description": "Don't Masturbate", "reward": [{"VIT": 1, "WIL": 2}], "penalty": [{"VIT": -3, "WIL": -5}], "duration": 1, "completed": false, "failed": false, "created_date": "01/05/10:08", "complete_by": "01/09/21:23", "repeat": 1, "repeat_success": false, "showing": false}, {"quest_number": 2, "title": "Building Good Habits: Morning", "description": "Wake up and do 100 push ups and 50 pull ups before 8:30 am!", "reward": [{"STR": 4, "VIT": 4, "WIL": 4}], "penalty": [{"STR": -2, "VIT": -2, "WIL": -5}], "duration": 1, "completed": false, "failed": false, "created_date": "01/05/10:11", "complete_by": "01/09/21:23", "repeat": 1, "repeat_success": false, "showing": false}, {"quest_number": 3, "title": "Don't Push Too Hard!", "description": "Don't push your butt out! If you bleed, you fail :(", "reward": [{"VIT": 0.1}], "penalty": [{"VIT": -20}], "duration": 1, "completed": false, "failed": false, "created_date": "01/05/21:09", "complete_by": "01/09/21:23", "repeat": 1, "repeat_success": true, "showing": false}, {"quest_number": 4, "title": "Understand Computational Chemistry", "description": "You can't do computational chemistry without understanding it. Start studying by learning about Brulion Zones, K-Points, and plane waves.", "reward": [{"INT": 2}], "penalty": [{"INT": -2}], "duration": 3, "completed": true, "failed": true, "created_date": "01/05/21:15", "complete_by": "01/09/21:15", "repeat": 0, "repeat_success": false, "showing": false}, {"quest_number": 5, "title": "More Porphyrins! $$$", "description": "Organize Porphyrin Data and choose/run 2 more porphyrins", "reward": [{"INT": 2}], "penalty": [{"INT": -2, "WIL": -1}], "duration": 1, "completed": false, "failed": false, "created_date": "01/05/21:23", "complete_by": "01/9/23:20", "repeat": 0, "repeat_success": false, "showing": false}, {"quest_number": 6, "title": "Father Appreciation", "description": "Take Dad out to lunch and make and tell him that I appreciate his work and effort all these years.\n", "reward": [{"VIT": 5.0}], "penalty": [{"VIT": -5.0, "WIL": -5.0}], "duration": 3, "completed": false, "failed": false, "created_date": "01/08/22:40", "complete_by": "01/11/22:40", "repeat": 0, "repeat_success": false, "showing": false}, {"quest_number": 7, "title": "Light Weight! Easy Weight!", "description": "No Workouts skipped during the week", "reward": [{"STR": 10.0, "CAR": 1.0, "VIT": 2.0, "WIL": 5.0}], "penalty": [{"VIT": -10.0, "WIL": -20.0}], "duration": 7, "completed": false, "failed": false, "created_date": "01/08/22:42", "complete_by": "01/15/22:42", "repeat": 1, "repeat_success": false, "showing": false}, {"quest_number": 8, "title": "Mantra!!!", "description": "Chant my mission mantra first thing in the morning and right before I sleep", "reward": [{"WIL": 0.1}], "penalty": [{"WIL": -1.0}], "duration": 1, "completed": false, "failed": false, "created_date": "01/08/22:44", "complete_by": "01/09/22:44", "repeat": 1, "repeat_success": false, "showing": false}, {"quest_number": 9, "title": "Daily Journal", "description": "Write a journal entry on your phone listing what progress you've made towards your goal", "reward": [{"WIL": 0.2}], "penalty": [{"WIL": -1.0}], "duration": 1, "completed": false, "failed": false, "created_date": "01/08/22:45", "complete_by": "01/09/22:45", "repeat": 1, "repeat_success": false, "showing": false}, {"quest_number": 10, "title": "Weekly Performance Review", "description": "Take 10 minutes and reflect on how well you've done in approaching your goals", "reward": [{"WIL": 0.5}], "penalty": [{"WIL": -2.0}], "duration": 7, "completed": false, "failed": false, "created_date": "01/08/22:46", "complete_by": "01/15/22:46", "repeat": 1, "repeat_success": false, "showing": false}, {"quest_number": 11, "title": "NO MANGA!", "description": "Manga only on Sundays for 1 hour!", "reward": [{"WIL": 0.5}], "penalty": [{"WIL": -5.0}], "duration": 1, "completed": false, "failed": false, "created_date": "01/08/22:47", "complete_by": "01/09/22:47", "repeat": 1, "repeat_success": false, "showing": false}, {"quest_number": 12, "title": "Abandon. YouTube.", "description": "No YouTube unless for watching videos for academic purposes.", "reward": [{"INT": 0.1, "WIL": 0.3}], "penalty": [{"INT": -2.0, "WIL": -1.0}], "duration": 1, "completed": false, "failed": false, "created_date": "01/08/22:49", "complete_by": "01/09/22:49", "repeat": 1, "repeat_success": false, "showing": false}]
+[
+    {
+        "quest_number": 0,
+        "title": "It's just an adsorption",
+        "description": "Run a basic adsorption calculation",
+        "reward": [
+            {
+                "INT": 5
+            }
+        ],
+        "penalty": [
+            {
+                "INT": -10
+            }
+        ],
+        "duration": 1,
+        "completed": true,
+        "failed": false,
+        "created_date": "01/04/13:40",
+        "complete_by": "01/09/13:40",
+        "repeat": 0,
+        "repeat_success": false,
+        "showing": false
+    },
+    {
+        "quest_number": 1,
+        "title": "Off with your Right Hand!",
+        "description": "Don't Masturbate",
+        "reward": [
+            {
+                "VIT": 1,
+                "WIL": 2
+            }
+        ],
+        "penalty": [
+            {
+                "VIT": -3,
+                "WIL": -5
+            }
+        ],
+        "duration": 1,
+        "completed": false,
+        "failed": false,
+        "created_date": "01/05/10:08",
+        "complete_by": "01/09/21:23",
+        "repeat": 1,
+        "repeat_success": false,
+        "showing": false
+    },
+    {
+        "quest_number": 2,
+        "title": "Building Good Habits: Morning",
+        "description": "Wake up and do 100 push ups and 50 pull ups before 8:30 am!",
+        "reward": [
+            {
+                "STR": 4,
+                "VIT": 4,
+                "WIL": 4
+            }
+        ],
+        "penalty": [
+            {
+                "STR": -2,
+                "VIT": -2,
+                "WIL": -5
+            }
+        ],
+        "duration": 1,
+        "completed": false,
+        "failed": false,
+        "created_date": "01/05/10:11",
+        "complete_by": "01/09/21:23",
+        "repeat": 1,
+        "repeat_success": false,
+        "showing": false
+    },
+    {
+        "quest_number": 3,
+        "title": "Don't Push Too Hard!",
+        "description": "Don't push your butt out! If you bleed, you fail :(",
+        "reward": [
+            {
+                "VIT": 0.1
+            }
+        ],
+        "penalty": [
+            {
+                "VIT": -20
+            }
+        ],
+        "duration": 1,
+        "completed": false,
+        "failed": false,
+        "created_date": "01/05/21:09",
+        "complete_by": "01/09/21:23",
+        "repeat": 1,
+        "repeat_success": true,
+        "showing": false
+    },
+    {
+        "quest_number": 4,
+        "title": "Understand Computational Chemistry",
+        "description": "You can't do computational chemistry without understanding it. Start studying by learning about Brulion Zones, K-Points, and plane waves.",
+        "reward": [
+            {
+                "INT": 2
+            }
+        ],
+        "penalty": [
+            {
+                "INT": -2
+            }
+        ],
+        "duration": 3,
+        "completed": true,
+        "failed": true,
+        "created_date": "01/05/21:15",
+        "complete_by": "01/09/21:15",
+        "repeat": 0,
+        "repeat_success": false,
+        "showing": false
+    },
+    {
+        "quest_number": 5,
+        "title": "More Porphyrins! $$$",
+        "description": "Organize Porphyrin Data and choose/run 2 more porphyrins",
+        "reward": [
+            {
+                "INT": 2
+            }
+        ],
+        "penalty": [
+            {
+                "INT": -2,
+                "WIL": -1
+            }
+        ],
+        "duration": 1,
+        "completed": false,
+        "failed": false,
+        "created_date": "01/05/21:23",
+        "complete_by": "01/9/23:20",
+        "repeat": 0,
+        "repeat_success": false,
+        "showing": false
+    },
+    {
+        "quest_number": 6,
+        "title": "Father Appreciation",
+        "description": "Take Dad out to lunch and make and tell him that I appreciate his work and effort all these years.\n",
+        "reward": [
+            {
+                "VIT": 5.0
+            }
+        ],
+        "penalty": [
+            {
+                "VIT": -5.0,
+                "WIL": -5.0
+            }
+        ],
+        "duration": 3,
+        "completed": false,
+        "failed": false,
+        "created_date": "01/08/22:40",
+        "complete_by": "01/11/22:40",
+        "repeat": 0,
+        "repeat_success": false,
+        "showing": false
+    },
+    {
+        "quest_number": 7,
+        "title": "Light Weight! Easy Weight!",
+        "description": "No Workouts skipped during the week",
+        "reward": [
+            {
+                "STR": 10.0,
+                "CAR": 1.0,
+                "VIT": 2.0,
+                "WIL": 5.0
+            }
+        ],
+        "penalty": [
+            {
+                "VIT": -10.0,
+                "WIL": -20.0
+            }
+        ],
+        "duration": 7,
+        "completed": false,
+        "failed": false,
+        "created_date": "01/08/22:42",
+        "complete_by": "01/15/22:42",
+        "repeat": 1,
+        "repeat_success": false,
+        "showing": false
+    },
+    {
+        "quest_number": 8,
+        "title": "Mantra!!!",
+        "description": "Chant my mission mantra first thing in the morning and right before I sleep",
+        "reward": [
+            {
+                "WIL": 0.1
+            }
+        ],
+        "penalty": [
+            {
+                "WIL": -1.0
+            }
+        ],
+        "duration": 1,
+        "completed": false,
+        "failed": false,
+        "created_date": "01/08/22:44",
+        "complete_by": "01/09/22:44",
+        "repeat": 1,
+        "repeat_success": false,
+        "showing": false
+    },
+    {
+        "quest_number": 9,
+        "title": "Daily Journal",
+        "description": "Write a journal entry on your phone listing what progress you've made towards your goal",
+        "reward": [
+            {
+                "WIL": 0.2
+            }
+        ],
+        "penalty": [
+            {
+                "WIL": -1.0
+            }
+        ],
+        "duration": 1,
+        "completed": false,
+        "failed": false,
+        "created_date": "01/08/22:45",
+        "complete_by": "01/09/22:45",
+        "repeat": 1,
+        "repeat_success": false,
+        "showing": false
+    },
+    {
+        "quest_number": 10,
+        "title": "Weekly Performance Review",
+        "description": "Take 10 minutes and reflect on how well you've done in approaching your goals",
+        "reward": [
+            {
+                "WIL": 0.5
+            }
+        ],
+        "penalty": [
+            {
+                "WIL": -2.0
+            }
+        ],
+        "duration": 7,
+        "completed": false,
+        "failed": false,
+        "created_date": "01/08/22:46",
+        "complete_by": "01/15/22:46",
+        "repeat": 1,
+        "repeat_success": false,
+        "showing": false
+    },
+    {
+        "quest_number": 11,
+        "title": "NO MANGA!",
+        "description": "Manga only on Sundays for 1 hour!",
+        "reward": [
+            {
+                "WIL": 0.5
+            }
+        ],
+        "penalty": [
+            {
+                "WIL": -5.0
+            }
+        ],
+        "duration": 1,
+        "completed": false,
+        "failed": false,
+        "created_date": "01/08/22:47",
+        "complete_by": "01/09/22:47",
+        "repeat": 1,
+        "repeat_success": false,
+        "showing": false
+    },
+    {
+        "quest_number": 12,
+        "title": "Abandon. YouTube.",
+        "description": "No YouTube unless for watching videos for academic purposes.",
+        "reward": [
+            {
+                "INT": 0.1,
+                "WIL": 0.3
+            }
+        ],
+        "penalty": [
+            {
+                "INT": -2.0,
+                "WIL": -1.0
+            }
+        ],
+        "duration": 1,
+        "completed": false,
+        "failed": false,
+        "created_date": "01/08/22:49",
+        "complete_by": "01/09/22:49",
+        "repeat": 1,
+        "repeat_success": false,
+        "showing": false
+    }
+]
