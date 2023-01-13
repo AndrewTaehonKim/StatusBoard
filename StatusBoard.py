@@ -26,6 +26,9 @@ for stat in status:
     with open("json_files/status.json", "w") as stat_file:
         json.dump(status, stat_file)
 
+# Keep Track of Quests that are Showing
+showing = []
+
 #  Main Functions
 def refresh_status(stats_frame):
     global status
@@ -113,43 +116,52 @@ class quest_window(Toplevel):
             fail_button = tk.Button(button_frame, command=lambda:finish_quest(quest_number,"failed", status_frame, self), text="Fail Quest T.T", font="Arial 17")
             fail_button.grid(column=2, row=0)
         #  Duration
-            if (quests[quest_number]["repeat"] == 0):
-                now = dt.datetime.now().strftime("%m/%d/%H:%M")
-                now = dt.datetime.strptime(now,"%m/%d/%H:%M")
-                due = dt.datetime.strptime(quests[quest_number]["complete_by"],"%m/%d/%H:%M")
+            now = dt.datetime.now().strftime("%m/%d/%H:%M")
+            now = dt.datetime.strptime(now,"%m/%d/%H:%M")
+            due = dt.datetime.strptime(quests[quest_number]["complete_by"],"%m/%d/%H:%M")
 
-                time_left = str(due-now)
-                duration = tk.Label(self, text="Time Left: \n"+time_left, font="Arial 17")
-                duration.pack(side="top")
-            else:
+            time_left = str(due-now)
+            self.duration = tk.Label(self, text="Time Left: \n"+time_left, font="Arial 17")
+            self.duration.pack(side="top")
+            if (quests[quest_number]["repeat"] == 1):
                 tk.Label(self, text="Repeat Quest", font="Arial 17").pack(side="top")
+
     def exit(self):
         quests[self.quest_number]["showing"] = False
         with open("json_files/quests.json", "w") as quest_file:
             json.dump(quests, quest_file)
         self.destroy()
+        return 1
+        
+    def update(self):
+        now = dt.datetime.now().strftime("%m/%d/%H:%M")
+        now = dt.datetime.strptime(now,"%m/%d/%H:%M")
+        due = dt.datetime.strptime(quests[self.quest_number]["complete_by"],"%m/%d/%H:%M")
+        time_left = str(due-now)
+        
+        self.duration.destroy()
+        self.duration = tk.Label(self, text="Time Left: \n"+time_left, font="Arial 17")
+        self.duration.pack(side="top")
+        return 1
             
 def finish_quest (quest_number, finish_status, status_frame, quest_root):
+    global showing
+    for quest_window in showing:
+        if (quest_window[1] == quest_number):
+            showing.remove(quest_window)
+    
     # Change JSON
     if (finish_status == "completed"):
-        if (quests[quest_number]["repeat"] == 0):
-            quests[quest_number]["completed"] = not quests[quest_number]["completed"]
-        else:
-            quests[quest_number]["repeat_success"] = not quests[quest_number]["repeat_success"]
-        # Apply Reward
-        stats = list(quests[quest_number]["reward"][0])
-        for stat in stats:
-            upgrade = quests[quest_number]["reward"][0][stat]
-            change_status(stat, upgrade)
+        result = "reward"
     elif (finish_status == "failed"):
-        if (quests[quest_number]["repeat"] == 0):
-            quests[quest_number]["failed"] = not quests[quest_number]["failed"]
-        stats = list(quests[quest_number]["penalty"][0])
-        for stat in stats:
-            downgrade = quests[quest_number]["penalty"][0][stat]
-            change_status(stat, downgrade) 
-    else:
-        print("Make sure finished_status argument is either 'completed' or 'failed'")
+        result = "penalty"
+    quests[quest_number][finish_status] = not quests[quest_number][finish_status]
+    
+    # Apply Stats Changes
+    stats = list(quests[quest_number][result][0])
+    for stat in stats:
+        val = quests[quest_number][result][0][stat]
+        change_status(stat, val)
         
     with open("json_files/quests.json", "w") as quest_file:
         json.dump(quests, quest_file)
@@ -161,19 +173,17 @@ def finish_quest (quest_number, finish_status, status_frame, quest_root):
     return 1
 
 def show_quest(type, status_frame):
-    global quests
+    global showing
     ongoing_quests = []
     completed_quests = []
     failed_quests = []
     i = 0
     for quest in quests:
-        if (quest["repeat_success"] == False and quest["repeat"] == 1):
+        if (quest["completed"] == False and quest["failed"] == False):
             ongoing_quests.append(i)
-        elif (quest["completed"] == 0 and quest["failed"] == 0 and quest["repeat"] == 0):
-            ongoing_quests.append(i)
-        elif (quest["completed"] == 1 and quest["failed"] == 0 and quest["repeat"] == 0):
+        elif (quest["completed"] == True and quest["failed"] == False and quest["repeat"] == 0):
             completed_quests.append(i)
-        elif (quest["failed"] == 1 and quest["completed"] == 0 and quest["repeat"] == 0):
+        elif (quest["failed"] == True and quest["completed"] == False and quest["repeat"] == 0):
             failed_quests.append(i)
         i += 1
     quest_list = []
@@ -183,11 +193,12 @@ def show_quest(type, status_frame):
         quest_list = completed_quests
     elif (type == "failed"):
         quest_list = failed_quests
-    
+        
     for quest_number in quest_list:
-        if(quests[quest_number]["showing"] == False):
-            quest_window(quest_number, type, status_frame)
-        quests[quest_number]["showing"] = True
+        if (quests[quest_number]["showing"] == False):
+            quest = quest_window(quest_number, type, status_frame)
+            showing.append([quest, quest_number])
+            quests[quest_number]["showing"] = True
         with open("json_files/quests.json", "w") as quest_file:
             json.dump(quests, quest_file)
     return 1
@@ -208,7 +219,6 @@ def make_quest(quest_maker,quest_number, title, description, rewards_array, pena
         "created_date": dt.datetime.now().strftime("%m/%d/%H:%M"),
         "complete_by": (dt.datetime.now() + dt.timedelta(days=int(duration))).strftime("%m/%d/%H:%M"),
         "repeat": repeat,
-        "repeat_success": False,
         "showing": False
     }
     
@@ -281,18 +291,24 @@ def quest_maker_window(tk_root):
 
 def check_overdue(root, status_frame, quest_root):
     now = dt.datetime.strptime(dt.datetime.now().strftime("%m/%d/%H:%M"),"%m/%d/%H:%M")
+    for quest_window in showing:
+        quest_window[0].update()
     for quest in quests:
-        if (quest["completed"] != True or quest["failed"] != True):
+        # if ongoing quest (not)
+        if (quest["completed"] == False and quest["failed"] == False):
+            # if overdue
             if (dt.datetime.strptime(quest["complete_by"], "%m/%d/%H:%M") < now):
-                if (quest["repeat_success"] == True):
-                    quest["repeat_success"] = False
-                    quest["complete_by"] = ( dt.datetime.strptime(quest["complete_by"], "%m/%d/%H:%M") + dt.timedelta(days=int(quest["duration"])) ).strftime("%m/%d/%H:%M")
-                    with open("json_files/quests.json", "w") as quest_file:
-                        json.dump(quests, quest_file)
-                else:
-                    print("FAILED Quest:" + quest["title"])
-                    finish_quest(quest["quest_number"], "failed", status_frame, quest_root)
-            
+                # Fail ongoing quest if overdue
+                finish_quest(quest["quest_number"], "failed", status_frame, quest_root)
+                # if it is a repeat quest, reset quest data
+                if (quest["repeat"] == 1): # If daily quest has been completed
+                        # reset for next repeat
+                        quest["completed"] = False 
+                        quest["failed"] = False 
+                        quest["complete_by"] = ( dt.datetime.strptime(quest["complete_by"], "%m/%d/%H:%M") + dt.timedelta(days=int(quest["duration"])) ).strftime("%m/%d/%H:%M")
+                        with open("json_files/quests.json", "w") as quest_file:
+                            json.dump(quests, quest_file)
+    
     root.after(60000, check_overdue, root, status_frame, NULL)
     
 def runTK ():
