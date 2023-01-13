@@ -294,21 +294,20 @@ def check_overdue(root, status_frame, quest_root):
     for quest_window in showing:
         quest_window[0].update()
     for quest in quests:
+        if (dt.datetime.strptime(quest["complete_by"], "%m/%d/%H:%M") < now):
         # if ongoing quest (not)
-        if (quest["completed"] == False and quest["failed"] == False):
-            # if overdue
-            if (dt.datetime.strptime(quest["complete_by"], "%m/%d/%H:%M") < now):
+            if (quest["completed"] == False and quest["failed"] == False):
                 # Fail ongoing quest if overdue
                 finish_quest(quest["quest_number"], "failed", status_frame, quest_root)
-                # if it is a repeat quest, reset quest data
-                if (quest["repeat"] == 1): # If daily quest has been completed
-                        # reset for next repeat
-                        quest["completed"] = False 
-                        quest["failed"] = False 
-                        quest["complete_by"] = ( dt.datetime.strptime(quest["complete_by"], "%m/%d/%H:%M") + dt.timedelta(days=int(quest["duration"])) ).strftime("%m/%d/%H:%M")
-                        with open("json_files/quests.json", "w") as quest_file:
-                            json.dump(quests, quest_file)
-    
+            # if it is a repeat quest, reset quest data
+            if (quest["repeat"] == 1): # If daily quest has been completed
+                    # reset for next repeat
+                    quest["completed"] = False 
+                    quest["failed"] = False 
+                    quest["complete_by"] = ( dt.datetime.strptime(quest["complete_by"], "%m/%d/%H:%M") + dt.timedelta(days=int(quest["duration"])) ).strftime("%m/%d/%H:%M")
+                    with open("json_files/quests.json", "w") as quest_file:
+                        json.dump(quests, quest_file)
+        
     root.after(60000, check_overdue, root, status_frame, NULL)
     
 def runTK ():
