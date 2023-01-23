@@ -66,6 +66,7 @@ def set_showing_false(quest_id_array):
     return 1
 
 class quest_window(Toplevel):
+    global showing
     #  Constructor
     def __init__(self, quest_number, quest_status, status_frame, master = None):
         super().__init__(master = master)
@@ -127,6 +128,9 @@ class quest_window(Toplevel):
                 tk.Label(self, text="Repeat Quest", font="Arial 17").pack(side="top")
 
     def exit(self):
+        for quest_window in showing:
+            if (quest_window[1] == self.quest_number):
+                showing.remove(quest_window)
         quests[self.quest_number]["showing"] = False
         with open("json_files/quests.json", "w") as quest_file:
             json.dump(quests, quest_file)
@@ -341,6 +345,10 @@ def runTK ():
         stat_name.grid(column=0, row=row)
         stat_val = tk.Label(stats_frame, text=status[stat_list[stat_keys[row]]]["value"], font="Arial 15")
         stat_val.grid(column=1, row=row)
+        percent = status[stat_list[stat_keys[row]]]["current_exp"]/status[stat_list[stat_keys[row]]]["next_level"]*100
+        percent = str(format(percent, '.1f'))+'%'
+        stat_progress = tk.Label(stats_frame, text='... '+percent, font="Arial 15")
+        stat_progress.grid(column=2, row=row)
     
     # Quests
     quests_frame = tk.Frame(root)
