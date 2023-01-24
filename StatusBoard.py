@@ -121,8 +121,10 @@ class quest_window(Toplevel):
             fail_button = tk.Button(button_frame, command=lambda:finish_quest(quest_number,"failed", status_frame, self), text="Fail Quest T.T", font="Arial 17")
             fail_button.grid(column=2, row=0)
             if (quests[quest_number]['repeat'] == 1):
-                pass_button = tk.Button(button_frame, command=lambda:finish_quest(quest_number,"passed", status_frame, self), text="Skip Quest T.T", font="Arial 17")
+                pass_button = tk.Button(button_frame, command=lambda:finish_quest(quest_number,"passed", status_frame, self), text="Skip Quest...", font="Arial 17")
                 pass_button.grid(column=1, row=0)
+            edit_button = tk.Button(button_frame, command=lambda:quest_editor_window(master, self.quest_number), text="Edit Quest", font="Arial 17")
+            edit_button.grid(column=1, row=1)
         #  Duration
             now = dt.datetime.now().strftime("%m/%d/%H:%M")
             now = dt.datetime.strptime(now,"%m/%d/%H:%M")
@@ -260,6 +262,34 @@ def make_quest(quest_maker,quest_number, title, description, rewards_array, pena
     quest_maker.destroy()
     return 1
 
+def edit_quest(quest_editor,quest_number, title, description, rewards_array, penalties_array, duration, repeat):
+    rewards_list = [reward.get() for reward in rewards_array]
+    penalties_list = [penalty.get() for penalty in penalties_array]
+    
+    quests[quest_number]['title'] = title
+    quests[quest_number]['description'] = description
+    quests[quest_number]['repeat'] = repeat
+    quests[quest_number]['duration'] = int(duration)
+ 
+    rewards_dict = {}
+    penalties_dict = {}
+    stats = list(stat_list.keys())
+    for i in range (len(stat_list)):
+        if (rewards_list[i] != ''):
+            rewards_dict[stats[i]] = float(rewards_list[i])
+    for i in range (len(stat_list)):
+        if (penalties_list[i] != ''):
+            penalties_dict[stats[i]] = float(penalties_list[i])
+
+    quests[quest_number]["reward"][0] = rewards_dict
+    quests[quest_number]["penalty"][0] = penalties_dict
+    
+    with open("json_files/quests.json", "w") as quest_file:
+        json.dump(quests, quest_file)
+    
+    quest_editor.destroy()
+    return 1
+
 def quest_maker_window(tk_root):
     quest_maker = Toplevel(tk_root)
     
@@ -307,6 +337,61 @@ def quest_maker_window(tk_root):
     submit_button.pack(side="top")
     return 1
 
+def quest_editor_window(tk_root, quest_number):
+    quest_maker = Toplevel(tk_root)
+    
+    title = tk.Label(quest_maker, text="Title:", font="Arial 17")
+    title.pack(side="top")
+    title_entry = tk.Entry(quest_maker, width=50)
+    title_entry.insert(0,quests[quest_number]['title'])
+    title_entry.pack(side="top")
+    description = tk.Label(quest_maker, text="Description:", font="Arial 17")
+    description.pack(side="top")
+    description_entry = tk.Text(quest_maker, width=50, height=3, wrap="word")
+    description_entry.insert(tk.END,quests[quest_number]['description'])
+    description_entry.pack(side="top")
+    
+    rewards_frame = tk.Frame(quest_maker)
+    rewards_frame.pack(side="top")
+    rewards_label = tk.Label(rewards_frame, text="REWARDS", font="Arial 17")
+    rewards_label.grid(column=0, row=0)
+    penalty_frame = tk.Frame(quest_maker)
+    penalty_frame.pack(side="top")
+    penalty_label = tk.Label(penalty_frame, text="PENALTIES", font="Arial 17")
+    penalty_label.grid(column=0, row=0)
+    row = 1
+    rewards_entry_list = []
+    penalties_entry_list = []
+    for stat in status:
+        tk.Label(rewards_frame, text=str(stat["name"])).grid(column=0, row=row)
+        reward = tk.Entry(rewards_frame)
+        if (stat["acronym"] in quests[quest_number]['reward'][0].keys()):
+            reward.insert(0,quests[quest_number]['reward'][0][stat["acronym"]])
+        reward.grid(column=1, row=row)
+        rewards_entry_list.append(reward)
+        tk.Label(penalty_frame, text=str(stat["name"])).grid(column=0, row=row)
+        penalty = tk.Entry(penalty_frame)
+        if (stat["acronym"] in quests[quest_number]['penalty'][0].keys()):
+            penalty.insert(0,quests[quest_number]['penalty'][0][stat["acronym"]])
+        penalty.grid(column=1, row=row)
+        penalties_entry_list.append(penalty)
+        row +=1
+    
+    tk.Label(quest_maker, text="Duration in Days:").pack(side="top")
+    duration_entry = tk.Entry(quest_maker)
+    duration_entry.insert(0, quests[quest_number]['duration'])
+    duration_entry.pack(side="top")
+    
+    repeat = tk.IntVar()
+    repeat_button = tk.Checkbutton(quest_maker, text="Repeat Quest?",onvalue = 1, offvalue = 0,variable = repeat)
+    if (quests[quest_number]['repeat'] == 1):
+        repeat_button.select()
+    repeat_button.pack(side="top")
+    
+    submit_button = tk.Button(quest_maker, text="Edit Quest", command=lambda:edit_quest(quest_maker,quest_number, title_entry.get(), description_entry.get("1.0",'end-1c'), rewards_entry_list, penalties_entry_list, duration_entry.get(),repeat.get()))
+    submit_button.pack(side="top")
+    return 1
+
 def check_overdue(root, status_frame, quest_root):
     now = dt.datetime.strptime(dt.datetime.now().strftime("%m/%d/%H:%M"),"%m/%d/%H:%M")
     for quest_window in showing:
@@ -332,7 +417,6 @@ def runTK ():
     root = tk.Tk()
     root.title('Status Board')
     root.iconbitmap("favicon.ico")
-    
     # Title
     title_frame = tk.Frame(root)
     title_frame.pack(side="top")
