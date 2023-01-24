@@ -39,6 +39,10 @@ def refresh_status(stats_frame):
         stat_name.grid(column=0, row=row)
         stat_val = tk.Label(stats_frame, text=status[stat_list[stat_keys[row]]]["value"], font="Arial 15")
         stat_val.grid(column=1, row=row)
+        percent = status[stat_list[stat_keys[row]]]["current_exp"]/status[stat_list[stat_keys[row]]]["next_level"]*100
+        percent = str(format(percent, '.1f'))+'%'
+        stat_progress = tk.Label(stats_frame, text='... '+percent, font="Arial 15")
+        stat_progress.grid(column=2, row=row)
     
 def change_status(stat, change):
     stat_index = stat_list[stat]
@@ -116,6 +120,9 @@ class quest_window(Toplevel):
             complete_button.grid(column=0, row=0)
             fail_button = tk.Button(button_frame, command=lambda:finish_quest(quest_number,"failed", status_frame, self), text="Fail Quest T.T", font="Arial 17")
             fail_button.grid(column=2, row=0)
+            if (quests[quest_number]['repeat'] == 1):
+                pass_button = tk.Button(button_frame, command=lambda:finish_quest(quest_number,"passed", status_frame, self), text="Skip Quest T.T", font="Arial 17")
+                pass_button.grid(column=1, row=0)
         #  Duration
             now = dt.datetime.now().strftime("%m/%d/%H:%M")
             now = dt.datetime.strptime(now,"%m/%d/%H:%M")
@@ -157,16 +164,23 @@ def finish_quest (quest_number, finish_status, status_frame, quest_root):
     # Change JSON
     if (finish_status == "completed"):
         result = "reward"
+        quests[quest_number][finish_status] = not quests[quest_number][finish_status]
+        # Apply Stats Changes
+        stats = list(quests[quest_number][result][0])
+        for stat in stats:
+            val = quests[quest_number][result][0][stat]
+            change_status(stat, val)
     elif (finish_status == "failed"):
         result = "penalty"
-    quests[quest_number][finish_status] = not quests[quest_number][finish_status]
+        quests[quest_number][finish_status] = not quests[quest_number][finish_status]
+        # Apply Stats Changes
+        stats = list(quests[quest_number][result][0])
+        for stat in stats:
+            val = quests[quest_number][result][0][stat]
+            change_status(stat, val)
+    elif (finish_status == "passed"):
+        quests[quest_number]["completed"] = not quests[quest_number]["completed"]
     
-    # Apply Stats Changes
-    stats = list(quests[quest_number][result][0])
-    for stat in stats:
-        val = quests[quest_number][result][0][stat]
-        change_status(stat, val)
-        
     with open("json_files/quests.json", "w") as quest_file:
         json.dump(quests, quest_file)
     refresh_status(status_frame) 
