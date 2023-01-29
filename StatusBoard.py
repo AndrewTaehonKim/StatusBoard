@@ -54,10 +54,16 @@ def change_status(stat, change):
         stat["current_exp"] = difference
         stat["next_level"] = set_exp_target(stat["value"])  #set new exp target
     elif (stat["current_exp"] < 0):     #drop level condition
-        stat["value"] -= 1
-        difference = stat["prev_level"] + stat["current_exp"]
-        stat["current_exp"] = difference
-        stat["next_level"] = set_exp_target(stat["value"])
+        while (stat["current_exp"] < 0):
+            stat["value"] -= 1
+            difference = stat["prev_level"] + stat["current_exp"]
+            stat["current_exp"] = difference
+            stat["next_level"] = set_exp_target(stat["value"])
+            stat["prev_level"] = set_exp_target(stat["value"]-1)
+            if (stat["value"] < 0):
+                stat["current_exp"] = 0
+                stat["value"] = 0
+                break
     with open("json_files/status.json", "w") as stat_file:
         json.dump(status, stat_file)
     return 1
