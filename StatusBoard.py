@@ -94,7 +94,7 @@ class quest_window(Toplevel):
         description = tk.Label(self, text=quests[quest_number]["description"], font="Arial 12", wraplength=300)
         description.pack(side="top")
         
-        if (quest_status == "ongoing"):    
+        if (quest_status == "ongoing" or quest_status == "repeat"):    
             # Rewards
             rewards_frame = tk.Frame(self)
             rewards_frame.pack(side="top")
@@ -203,15 +203,19 @@ def show_quest(type, status_frame):
     ongoing_quests = []
     completed_quests = []
     failed_quests = []
+    repeat_quests = []
     i = 0
     for quest in quests:
-        if (quest["completed"] == False and quest["failed"] == False):
+        if (quest["completed"] == False and quest["failed"] == False and quest["repeat"] == 0):
             ongoing_quests.append(i)
+        elif (quest["completed"] == False and quest["failed"] == False and quest["repeat"] == 1):
+            repeat_quests.append(i)
         elif (quest["completed"] == True and quest["failed"] == False and quest["repeat"] == 0):
             completed_quests.append(i)
         elif (quest["failed"] == True and quest["completed"] == False and quest["repeat"] == 0):
             failed_quests.append(i)
         i += 1
+        
     quest_list = []
     if (type == "ongoing"):
         quest_list = ongoing_quests
@@ -219,6 +223,8 @@ def show_quest(type, status_frame):
         quest_list = completed_quests
     elif (type == "failed"):
         quest_list = failed_quests
+    elif(type == "repeat"):
+        quest_list = repeat_quests
         
     for quest_number in quest_list:
         if (quests[quest_number]["showing"] == False):
@@ -423,6 +429,10 @@ def runTK ():
     root = tk.Tk()
     root.title('Status Board')
     root.iconbitmap("favicon.ico")
+    
+    root.attributes('-topmost', True)
+    root.update()
+    
     # Title
     title_frame = tk.Frame(root)
     title_frame.pack(side="top")
@@ -457,10 +467,12 @@ def runTK ():
     # Quests
     quests_frame = tk.Frame(root)
     quests_frame.pack(side="bottom")
-    show_ongoing_quest = tk.Button(quests_frame, command=lambda:show_quest("ongoing", stats_frame), text="Ongoing Quests", font="Arial 17")
+    show_ongoing_quest = tk.Button(quests_frame, command=lambda:show_quest("ongoing", stats_frame), text="Main Quests", font="Arial 17")
     show_ongoing_quest.grid(column=1, row=1)
+    show_repeat_quest =  tk.Button(quests_frame, command=lambda:show_quest("repeat", stats_frame), text="Repeat Quests", font="Arial 17")
+    show_repeat_quest.grid(column=2, row=1)
     show_make_quest = tk.Button(quests_frame, command=lambda:quest_maker_window(root), text="Make Quest", font="Arial 17")
-    show_make_quest.grid(column=2, row=1)
+    show_make_quest.grid(column=3, row=1)
     show_completed_quest = tk.Button(quests_frame, command=lambda:show_quest("completed", stats_frame), text="Completed Quests", font="Arial 17")
     show_completed_quest.grid(column=1, row=2)
     show_failed_quest = tk.Button(quests_frame, command=lambda:show_quest("failed", stats_frame), text="Failed Quests", font="Arial 17")
