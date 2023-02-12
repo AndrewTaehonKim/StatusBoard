@@ -217,14 +217,24 @@ def show_quest(type, status_frame):
         i += 1
         
     quest_list = []
+    
+    def sort_date(val):
+        return val[1]
+    
     if (type == "ongoing"):
         quest_list = ongoing_quests
+        quest_objects = [[i,[quests[i]['complete_by']]] for i in quest_list]
+        quest_objects.sort(key=sort_date)
+        quest_list = [quest_num[0] for quest_num in quest_objects]
     elif (type == "completed"):
         quest_list = completed_quests
     elif (type == "failed"):
         quest_list = failed_quests
     elif(type == "repeat"):
         quest_list = repeat_quests
+        quest_objects = [[i,[quests[i]['complete_by']]] for i in quest_list]
+        quest_objects.sort(key=sort_date)
+        quest_list = [quest_num[0] for quest_num in quest_objects]
         
     for quest_number in quest_list:
         if (quests[quest_number]["showing"] == False):
