@@ -8,3 +8,5 @@ exe_command.txt
 json_files/profile.json
 json_files/status.json
 json_files/quests.json
+
+build.py
